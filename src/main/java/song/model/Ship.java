@@ -158,7 +158,7 @@ public class Ship implements Serializable {
     private List<Double> vArray;
     private List<Double> urArray;
     private List<Double> vrArray;
-    private List<Double> VArray;
+    private List<Double> V_Array;
     private List<Double> rDegArray;
     private List<Double> rRadArray;
     private List<Double> xArray;

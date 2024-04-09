@@ -66,7 +66,143 @@ public class Simulation {
             ship.setT(ship.getT()+Contents.dt);
 
             //以下记录绘图值，y轴要进行反转，从指向上转为指向下
-            //全是数组append，暂不处理
+            //全是数组append，绘图从这些数组里面取数据
+            List<Double> uArray = ship.getUArray();
+            uArray.add(ship.getU());
+            ship.setUArray(uArray);
+
+            List<Double> vArray = ship.getVArray();
+            vArray.add(ship.getV());
+            ship.setVArray(vArray);
+
+            List<Double> urArray = ship.getUrArray();
+            urArray.add(ur);
+            ship.setUrArray(urArray);
+
+            List<Double> vrArray = ship.getVrArray();
+            vrArray.add(vr);
+            ship.setVArray(vrArray);
+
+            //他命名好多问题，又用V又用v
+            List<Double> VArray = ship.getV_Array();
+            VArray.add(V);
+            ship.setV_Array(VArray);
+
+            double rDeg = ship.getRRad()*180/Math.PI;
+
+            List<Double> rDegArray = ship.getRDegArray();
+            rDegArray.add(rDeg);
+            ship.setRDegArray(rDegArray);
+
+            List<Double> rRadArray = ship.getRRadArray();
+            rRadArray.add(ship.getRRad());
+            ship.setRRadArray(rRadArray);
+
+            List<Double> xArray = ship.getXArray();
+            xArray.add(ship.getX());
+            ship.setXArray(xArray);
+
+            //y正常的进行计算，只是在绘图或输出时进行翻转，逆时针变顺时针
+            ship.setYDraw(-ship.getY());
+            List<Double> yDrawArray = ship.getYDrawArray();
+            yDrawArray.add(ship.getYDraw());
+            ship.setYDrawArray(yDrawArray);
+
+            List<Double> faiDegArray = ship.getFaiDegArray();
+            faiDegArray.add(ship.getFaiDeg());
+            ship.setFaiDegArray(faiDegArray);
+
+            double faiDegDraw;
+            if(ship.getFaiDeg() <180){
+                faiDegDraw = ship.getFaiDeg();
+            }else {
+                faiDegDraw = ship.getFaiDeg()-360;
+            }
+            List<Double> faiDegDrawArray = ship.getFaiDegDrawArray();
+            faiDegDrawArray.add(faiDegDraw);
+            ship.setFaiDegDrawArray(faiDegDrawArray);
+
+            List<Double> headingArray = ship.getHeadingArray();
+            headingArray.add(headingDegNext);
+            ship.setHeadingArray(headingArray);
+
+            List<Double> piaoJiaoArray = ship.getPiaoJiaoArray();
+            piaoJiaoArray.add(piaojiaoRad);
+            ship.setPiaoJiaoArray(piaoJiaoArray);
+
+            List<Double> piaojiaoArrayDeg = ship.getPiaoJiaoArrayDeg();
+            piaojiaoArrayDeg.add(piaojiaoRad * 180/Math.PI);
+            ship.setPiaoJiaoArrayDeg(piaojiaoArrayDeg);
+
+            List<Double> uAccArray = ship.getUAccArray();
+            uAccArray.add(uAcc);
+            ship.setUAccArray(uAccArray);
+
+            List<Double> vAccArray = ship.getVAccArray();
+            vAccArray.add(vAcc);
+            ship.setVAccArray(vAccArray);
+
+            List<Double> rAccRadArray = ship.getRAccRadArray();
+            rAccRadArray.add(rAccRad);
+            ship.setRAccRadArray(rAccRadArray);
+
+            //
+            List<Double> XpArray = ship.getXpArray();
+            XpArray.add(Xp);
+            ship.setXpArray(XpArray);
+            List<Double> YpArray = ship.getYpArray();
+            YpArray.add(Yp);
+            ship.setYpArray(YpArray);
+            List<Double> NpArray = ship.getNpArray();
+            NpArray.add(Np);
+            ship.setNpArray(NpArray);
+            List<Double> XRArray = ship.getXRArray();
+            XRArray.add(XR);
+            ship.setXRArray(XRArray);
+            List<Double> YRArray = ship.getYRArray();
+            YRArray.add(YR);
+            ship.setYRArray(YRArray);
+            List<Double> NRArray = ship.getNRArray();
+            NRArray.add(NR);
+            ship.setNRArray(NRArray);
+            List<Double> XHArray = ship.getXHArray();
+            XHArray.add(XH);
+            ship.setXHArray(XHArray);
+            List<Double> YHArray = ship.getYHArray();
+            YHArray.add(YH);
+            ship.setYHArray(YHArray);
+            List<Double> NHArray = ship.getNHArray();
+            NHArray.add(NH);
+            ship.setNHArray(NHArray);
+            List<Double> XwdArray = ship.getXwdArray();
+            XwdArray.add(Xwd);
+            ship.setXwdArray(XwdArray);
+            List<Double> YwdArray = ship.getYwdArray();
+            YwdArray.add(Ywd);
+            ship.setYwdArray(YwdArray);
+            List<Double> NwdArray = ship.getNwdArray();
+            NwdArray.add(Nwd);
+            ship.setNwdArray(NwdArray);
+//            List<Double> XwvArray = ship.getXwvArray();
+//            XwvArray.add(Xwv);
+//            ship.setXwvArray(XwvArray);
+//            List<Double> YwvArray = ship.getYwvArray();
+//            YwvArray.add(Ywv);
+//            ship.setYwvArray(YwvArray);
+//            List<Double> NwvArray = ship.getNwvArray();
+//            NwvArray.add(Nwv);
+//            ship.setNwvArray(NwvArray);
+
+            List<Double> tArray = ship.getTArray();
+            tArray.add(ship.getT());
+            ship.setTArray(tArray);
+            //todo：模型的n
+//            List<Double> nArray = ship.getNArray();
+//            nArray.add(ship.getN());
+//            ship.setYwdArray(nArray);
+            List<Double> dertaDegArray = ship.getDertaDegArray();
+            dertaDegArray.add(ship.getDertaDeg());
+            ship.setDertaDegArray(dertaDegArray);
 
         }
 
@@ -122,7 +258,7 @@ public class Simulation {
             //按当前状态和风浪流环境情况，计算XH，Xp, Xwd等力，只用于保存和输出，并不参与运动预报
             double [] forceArray = motionService.f(ship.getU(),ship.getV(),ship.getRRad(),ship.getUAcc(),ship.getVAcc(),ship.getRAccRad(),
                     ship.getFaiDeg(),ship.getWinDirnInpDeg(),ship.getWinSpdInp(),ship.getCurnDirnInpDeg(),ship.getCurnSpdInp());
-            double XH, YH, NH, Xp, Yp, Np, XR, YR, NR, Xwd, Ywd, Nwd, ur, vr;
+            double XH, YH, NH, Xp, Yp, Np, XR, YR, NR, Xwd, Ywd, Nwd, Xwv, Ywv, Nwv, ur, vr;
             XH = forceArray[3];
             YH = forceArray[4];
             NH = forceArray[5];
@@ -135,6 +271,9 @@ public class Simulation {
             Xwd = forceArray[13];
             Ywd = forceArray[14];
             Nwd = forceArray[15];
+            Xwv = forceArray[16];
+            Ywv = forceArray[17];
+            Nwv = forceArray[18];
             ur = forceArray[19];
             vr = forceArray[20];
 
@@ -158,9 +297,148 @@ public class Simulation {
             ship.setT(ship.getT()+Contents.dt);
 
             //以下记录绘图值，y轴要进行反转，从指向上转为指向下
-            //全是数组append，暂不处理
+            //以下记录绘图值，y轴要进行反转，从指向上转为指向下
+            //全是数组append，绘图从这些数组里面取数据
+            List<Double> uArray = ship.getUArray();
+            uArray.add(ship.getU());
+            ship.setUArray(uArray);
+
+            List<Double> vArray = ship.getVArray();
+            vArray.add(ship.getV());
+            ship.setVArray(vArray);
+
+            List<Double> urArray = ship.getUrArray();
+            urArray.add(ur);
+            ship.setUrArray(urArray);
+
+            List<Double> vrArray = ship.getVrArray();
+            vrArray.add(vr);
+            ship.setVArray(vrArray);
+
+            //他命名好多问题，又用V又用v
+            List<Double> VArray = ship.getV_Array();
+            VArray.add(V);
+            ship.setV_Array(VArray);
+
+            double rDeg = ship.getRRad()*180/Math.PI;
+
+            List<Double> rDegArray = ship.getRDegArray();
+            rDegArray.add(rDeg);
+            ship.setRDegArray(rDegArray);
+
+            List<Double> rRadArray = ship.getRRadArray();
+            rRadArray.add(ship.getRRad());
+            ship.setRRadArray(rRadArray);
+
+            List<Double> xArray = ship.getXArray();
+            xArray.add(ship.getX());
+            ship.setXArray(xArray);
+
+            //y正常的进行计算，只是在绘图或输出时进行翻转，逆时针变顺时针
+            ship.setYDraw(-ship.getY());
+            List<Double> yDrawArray = ship.getYDrawArray();
+            yDrawArray.add(ship.getYDraw());
+            ship.setYDrawArray(yDrawArray);
+
+            List<Double> faiDegArray = ship.getFaiDegArray();
+            faiDegArray.add(ship.getFaiDeg());
+            ship.setFaiDegArray(faiDegArray);
+
+            double faiDegDraw;
+            if(ship.getFaiDeg() <180){
+                faiDegDraw = ship.getFaiDeg();
+            }else {
+                faiDegDraw = ship.getFaiDeg()-360;
+            }
+            List<Double> faiDegDrawArray = ship.getFaiDegDrawArray();
+            faiDegDrawArray.add(faiDegDraw);
+            ship.setFaiDegDrawArray(faiDegDrawArray);
+
+            List<Double> headingArray = ship.getHeadingArray();
+            headingArray.add(headingDegNext);
+            ship.setHeadingArray(headingArray);
+
+            List<Double> piaoJiaoArray = ship.getPiaoJiaoArray();
+            piaoJiaoArray.add(piaojiaoRad);
+            ship.setPiaoJiaoArray(piaoJiaoArray);
+
+            List<Double> piaojiaoArrayDeg = ship.getPiaoJiaoArrayDeg();
+            piaojiaoArrayDeg.add(piaojiaoRad * 180/Math.PI);
+            ship.setPiaoJiaoArrayDeg(piaojiaoArrayDeg);
+
+            List<Double> uAccArray = ship.getUAccArray();
+            uAccArray.add(uAcc);
+            ship.setUAccArray(uAccArray);
+
+            List<Double> vAccArray = ship.getVAccArray();
+            vAccArray.add(vAcc);
+            ship.setVAccArray(vAccArray);
+
+            List<Double> rAccRadArray = ship.getRAccRadArray();
+            rAccRadArray.add(rAccRad);
+            ship.setRAccRadArray(rAccRadArray);
+
+            //
+            List<Double> XpArray = ship.getXpArray();
+            XpArray.add(Xp);
+            ship.setXpArray(XpArray);
+            List<Double> YpArray = ship.getYpArray();
+            YpArray.add(Yp);
+            ship.setYpArray(YpArray);
+            List<Double> NpArray = ship.getNpArray();
+            NpArray.add(Np);
+            ship.setNpArray(NpArray);
+            List<Double> XRArray = ship.getXRArray();
+            XRArray.add(XR);
+            ship.setXRArray(XRArray);
+            List<Double> YRArray = ship.getYRArray();
+            YRArray.add(YR);
+            ship.setYRArray(YRArray);
+            List<Double> NRArray = ship.getNRArray();
+            NRArray.add(NR);
+            ship.setNRArray(NRArray);
+            List<Double> XHArray = ship.getXHArray();
+            XHArray.add(XH);
+            ship.setXHArray(XHArray);
+            List<Double> YHArray = ship.getYHArray();
+            YHArray.add(YH);
+            ship.setYHArray(YHArray);
+            List<Double> NHArray = ship.getNHArray();
+            NHArray.add(NH);
+            ship.setNHArray(NHArray);
+            List<Double> XwdArray = ship.getXwdArray();
+            XwdArray.add(Xwd);
+            ship.setXwdArray(XwdArray);
+            List<Double> YwdArray = ship.getYwdArray();
+            YwdArray.add(Ywd);
+            ship.setYwdArray(YwdArray);
+            List<Double> NwdArray = ship.getNwdArray();
+            NwdArray.add(Nwd);
+            ship.setNwdArray(NwdArray);
+            List<Double> XwvArray = ship.getXwvArray();
+            XwvArray.add(Xwv);
+            ship.setXwvArray(XwvArray);
+            List<Double> YwvArray = ship.getYwvArray();
+            YwvArray.add(Ywv);
+            ship.setYwvArray(YwvArray);
+            List<Double> NwvArray = ship.getNwvArray();
+            NwvArray.add(Nwv);
+            ship.setNwvArray(NwvArray);
+
+            List<Double> tArray = ship.getTArray();
+            tArray.add(ship.getT());
+            ship.setTArray(tArray);
+            //todo:模型的N
+//            List<Double> nArray = ship.getNArray();
+//            nArray.add(ship.getN());
+//            ship.setYwdArray(nArray);
+            List<Double> dertaDegArray = ship.getDertaDegArray();
+            dertaDegArray.add(ship.getDertaDeg());
+            ship.setDertaDegArray(dertaDegArray);
 
         }
+//        要打印的数据可以在这里打印
+//        System.out.println("");
 
         boolean flagSwitchDraw = false;
         if(flagSwitchDraw){

@@ -175,7 +175,7 @@ public class motionServiceImpl implements motionService {
 
     //输入船舶对流速度，转速，螺旋桨转速
     //输出船舶螺旋桨三个力和舵的三个力，由于舵用到一些桨的数据，因此放一起
-    //本函数缺参数
+    //本函数缺参数，也没用上这个函数，可以删除
     @Override
     public Void doublePropRudderChange(double ur,double vr,double rRad,double n,double dertaDeg) {
         double shipSpd = Math.sqrt(ur * ur + vr * vr);
@@ -319,6 +319,7 @@ public class motionServiceImpl implements motionService {
 
         // ... 这里填充Isherwood数据库的具体数值 ...
         // 又是魔法值
+        // todo：确认一下这里需不需要也改成外部输入
         double[][] A = {{2.152, -5.000, 0.243, -0.164, 0.000, 0.000, 0.000},
                 {1.714, -3.330, 0.145, -0.121, 0.000, 0.000, 0.000},
                 {1.818, -3.970, 0.211, -0.143, 0.000, 0.000, 0.033},
@@ -517,7 +518,7 @@ public class motionServiceImpl implements motionService {
         return waveForce;
     }
 
-    //prop_rudder，这个函数有问题，缺参数
+    //prop_rudder，这个函数有问题，缺参数，也没用上，可以删除
     @Override
     public PropRudder propRudder(double u,double v,double rRad,double derta){
         PropRudder propRudder = new PropRudder();
