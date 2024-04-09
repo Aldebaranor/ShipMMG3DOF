@@ -86,6 +86,117 @@ public class Ship implements Serializable {
     private Double shipCirAreaLSS;
     private Double shipPilaN;
 
+    //设置参数
+    private Double t;//仿真时间？
+    private Double youmen;
+    private Double dertaDeg;
+    private Double dertaDegInput;
+    private Boolean windSwitch;
+    private Double winDirnInpDeg;
+    private Double winSpdInp;
+    private Boolean curnSwitch;
+    private Double curnDirnInpDeg;
+    private Double curnSpdInp;
+    private Boolean waveSwitch;
+    private Double waveNmda;
+    private Double waveDirnInpDeg;
+    private Double waveHeight;
+    private Boolean drowingSwitch;
+    private Boolean controlSwitch;
+    private Boolean isRealTCPUDP;
+    private Boolean isStartSimulation;
+    private Double x;
+    private Double y;
+    private Double yDraw;
+    private Double faiDeg;
+    private Double headingDeg;
+    private Double u;
+    private Double v;
+    private Double rRad;
+    private Double uAcc;
+    private Double vAcc;
+    private Double rAccRad;
+
+    private Double tStable;
+    private Double tMax;
+
+    private List<Double> P1;
+    private List<Double> P2;
+    private Integer indexNextPoint;
+
+    private Boolean justStart;
+    private List<Double> ptsDesiredArray;
+    private List<Double> vtsDesiredArray;
+    private List<Double> ptsMDesiredArray;
+    private List<Double> ptsRelaMDesiredArray;
+    private Double pingTaiXunHangMoShi;
+    private List<Double> numOfGoals;
+    private Double range;
+    private double[] origin;
+    private Boolean finished;
+    private Boolean justToStop;
+    private Boolean stopSuccess;
+    //绘图用的参数
+    private List<Double> tArray;
+    private List<Double> qiuArray;
+    private List<Double> XpArray;
+    private List<Double> YpArray;
+    private List<Double> NpArray;
+    private List<Double> XRArray;
+    private List<Double> YRArray;
+    private List<Double> NRArray;
+    private List<Double> XHArray;
+    private List<Double> YHArray;
+    private List<Double> NHArray;
+    private List<Double> XwdArray;
+    private List<Double> YwdArray;
+    private List<Double> NwdArray;
+    private List<Double> XwvArray;
+    private List<Double> YwvArray;
+    private List<Double> NwvArray;
+    private List<Double> uArray;
+    private List<Double> vArray;
+    private List<Double> urArray;
+    private List<Double> vrArray;
+    private List<Double> VArray;
+    private List<Double> rDegArray;
+    private List<Double> rRadArray;
+    private List<Double> xArray;
+    private List<Double> yArray;
+    private List<Double> yDrawArray;
+    private List<Double> FaiDegArray;
+    private List<Double> FaiDegDrawArray;
+    private List<Double> headingArray;
+    private List<Double> piaoJiaoArray;
+    private List<Double> piaoJiaoArrayDeg;
+    private List<Double> nArray;
+    private List<Double> dertaDegArray;
+    private List<Double> winDirnEncDegArray;
+    private List<Double> winSpdEncArray;
+    private List<Double> winThetaEncArray;
+    private List<Double> xLeftShortArray;
+    private List<Double> yLeftShortArray;
+    private List<Double> nLeftShortArray;
+    private List<Double> xLeftLongArray;
+    private List<Double> yLeftLongArray;
+    private List<Double> nLeftLongArray;
+    private List<Double> uAccArray;
+    private List<Double> vAccArray;
+    private List<Double> rAccRadArray;
+    private List<Double> Cxw0Array;
+    private List<Double> Cxw1Array;
+    private List<Double> Cxw2Array;
+    private List<Double> Cyw0Array;
+    private List<Double> Cyw1Array;
+    private List<Double> Cyw2Array;
+    private List<Double> Cyw3Array;
+    private List<Double> Cyw4Array;
+    private List<Double> Cnw0Array;
+    private List<Double> Cnw1Array;
+    private List<Double> Cnw2Array;
+    private List<Double> Cnw3Array;
+    private List<Double> Cnw4Array;
+    private List<Double> eFaiRadRecordArray;
 
 
 

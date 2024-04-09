@@ -1,5 +1,6 @@
 package song.service.Impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import song.model.*;
 import song.service.motionService;
@@ -11,122 +12,13 @@ import java.util.List;
 import static song.model.Contents.dt;
 
 @Service
+@RequiredArgsConstructor
 public class motionServiceImpl implements motionService {
 
     Ship ship = new Ship();
-    //todo:从外部输入参数
+    //todo:从外部输入参数 w1 w2 w3 船体属性 桨属性
 
-    //设置参数
-    private Double youmen;
-    private Double dertaDeg;
-    private Double dertaDegInput;
-    private Boolean windSwitch;
-    private Double winDirnInpDeg;
-    private Double winSpdInp;
-    private Boolean curnSwitch;
-    private Double curnDirnInpDeg;
-    private Double curnSpdInp;
-    private Boolean waveSwitch;
-    private Double waveNmda;
-    private Double waveDirnInpDeg;
-    private Double waveHeight;
-    private Boolean drowingSwitch;
-    private Boolean controlSwitch;
-    private Boolean isRealTCPUDP;
-    private Boolean isStartSimulation;
-    //不是，x,y,u,v这种变量名你敢随便取的？？？？
-//    private Double x;
-//    private Double y;
-    private Double yDraw;
-    private Double faiDeg;
-    private Double headingDeg;
-//    private Double u;
-//    private Double v;
-    private Double rRad;
-    private Double uAcc;
-    private Double vAcc;
-    private Double rAccRad;
 
-    private Double tStable;
-    private Double tMax;
-
-    private List<Double> P1;
-    private List<Double> P2;
-    private Integer indexNextPoint;
-
-    private Boolean justStart;
-    private List<Double> ptsDesiredArray;
-    private List<Double> vtsDesiredArray;
-    private List<Double> ptsMDesiredArray;
-    private List<Double> ptsRelaMDesiredArray;
-    private Double pingTaiXunHangMoShi;
-    private List<Double> numOfGoals;
-    private Double range;
-    private double[] origin;
-    private Boolean finished;
-    private Boolean justToStop;
-    private Boolean stopSuccess;
-    //todo:参数设置
-    private List<Double> tArray;
-    private List<Double> qiuArray;
-    private List<Double> XpArray;
-    private List<Double> YpArray;
-    private List<Double> NpArray;
-    private List<Double> XRArray;
-    private List<Double> YRArray;
-    private List<Double> NRArray;
-    private List<Double> XHArray;
-    private List<Double> YHArray;
-    private List<Double> NHArray;
-    private List<Double> XwdArray;
-    private List<Double> YwdArray;
-    private List<Double> NwdArray;
-    private List<Double> XwvArray;
-    private List<Double> YwvArray;
-    private List<Double> NwvArray;
-    private List<Double> uArray;
-    private List<Double> vArray;
-    private List<Double> urArray;
-    private List<Double> vrArray;
-    private List<Double> VArray;
-    private List<Double> rDegArray;
-    private List<Double> rRadArray;
-    private List<Double> xArray;
-    private List<Double> yArray;
-    private List<Double> yDrawArray;
-    private List<Double> FaiDegArray;
-    private List<Double> FaiDegDrawArray;
-    private List<Double> headingArray;
-    private List<Double> piaoJiaoArray;
-    private List<Double> piaoJiaoArrayDeg;
-    private List<Double> nArray;
-    private List<Double> dertaDegArray;
-    private List<Double> winDirnEncDegArray;
-    private List<Double> winSpdEncArray;
-    private List<Double> winThetaEncArray;
-    private List<Double> xLeftShortArray;
-    private List<Double> yLeftShortArray;
-    private List<Double> nLeftShortArray;
-    private List<Double> xLeftLongArray;
-    private List<Double> yLeftLongArray;
-    private List<Double> nLeftLongArray;
-    private List<Double> uAccArray;
-    private List<Double> vAccArray;
-    private List<Double> rAccRadArray;
-    private List<Double> Cxw0Array;
-    private List<Double> Cxw1Array;
-    private List<Double> Cxw2Array;
-    private List<Double> Cyw0Array;
-    private List<Double> Cyw1Array;
-    private List<Double> Cyw2Array;
-    private List<Double> Cyw3Array;
-    private List<Double> Cyw4Array;
-    private List<Double> Cnw0Array;
-    private List<Double> Cnw1Array;
-    private List<Double> Cnw2Array;
-    private List<Double> Cnw3Array;
-    private List<Double> Cnw4Array;
-    private List<Double> eFaiRadRecordArray;
     private double X0, Xu, X_uu, X_u_De, X_vv, X_rr, X_vr;
     private double Y_v, Y_vvv, Y_v_De, Y_r, Y_rrr, Y_vvr, Y_vrr;
     private double N_v, N_vvv, N_r, N_rrr, N_r_De, N_vvr, N_vrr;
@@ -217,12 +109,74 @@ public class motionServiceImpl implements motionService {
         N_vvr = w3[5] / 100.0;
         N_vrr = w3[6] / 100.0;
 
+        ship.setT(0.0);
+        ship.setYoumen(0.60);
+        //实际进入计算的舵角
+        ship.setDertaDegInput(20.0);
+        //设定的舵角
+        ship.setDertaDeg(0.0);
+        ship.setWindSwitch(false);
+        ship.setWinDirnInpDeg(90.0);
+        //单位m/s
+        ship.setWinSpdInp(2.0);
+        ship.setCurnSwitch(false);
+        //180度减速，0度加速，90度北移，-90度南移
+        ship.setCurnDirnInpDeg(-90.0);
+        //流速不要超过0.5
+        ship.setCurnSpdInp(0.5);
+        ship.setWindSwitch(false);
+        //波长
+        ship.setWaveNmda(ship.getL());
+        //波高波向，与浪向相同
+        ship.setWaveDirnInpDeg(180.0);
+        //波高
+        ship.setWaveHeight(0.35);
+        //是否开启调试绘制
+        ship.setDrowingSwitch(true);
+        //打舵是根据轨迹自动控制，否：舵角由人指定
+        ship.setControlSwitch(false);
+        //是否真实TCP通信
+        ship.setIsRealTCPUDP(false);
+        //是否开始仿真
+        ship.setIsStartSimulation(false);
+
+        //状态量
+        //实时位置
+        ship.setX(0.0);
+        ship.setY(0.0);
+        ship.setYDraw(0.0);
+        ship.setFaiDeg(0.0);
+        ship.setHeadingDeg(0.0);
+        //速度
+        ship.setU(1.5);
+        ship.setV(0.0);
+        ship.setRRad(0.0);
+        ship.setUAcc(0.0);
+        ship.setVAcc(0.0);
+        ship.setRAccRad(0.0);
+        //让船稳定跑成直航的时间
+        ship.setTStable(30.0);
+        ship.setTMax(300.0);
+
+        ship.setJustStart(true);
+        //默认为停止状态
+        ship.setPingTaiXunHangMoShi(0.0);
+        //判断船舶进入范围的距离
+        ship.setRange(30.0);
+        //判断是否到终点,到了会进入StopProcess
+        ship.setFinished(false);
+        //判断是否是StopProcess中的第一个周期，第一个周期时需要求均值
+        ship.setJustToStop(true);
+        ship.setStopSuccess(false);
+        //绘图相关参数未设置
+
         return ship;
     }
 
     //输入船舶对流速度，转速，螺旋桨转速
     //输出船舶螺旋桨三个力和舵的三个力，由于舵用到一些桨的数据，因此放一起
     //本函数缺参数
+    @Override
     public Void doublePropRudderChange(double ur,double vr,double rRad,double n,double dertaDeg) {
         double shipSpd = Math.sqrt(ur * ur + vr * vr);
         if (shipSpd == 0.0) {
@@ -276,6 +230,7 @@ public class motionServiceImpl implements motionService {
     }
 
     //用于检查是否跨越30的整数倍的辅助函数
+    @Override
     public Boolean isCrossingMultipleOf30(double prevValue,double currentValue){
         double prevMultiple = Math.floor(prevValue/30);
         double currentMultiple = Math.floor(currentValue/30);
@@ -289,6 +244,7 @@ public class motionServiceImpl implements motionService {
     # juststart的判断，即使中间修改点轨迹，只要origin定了，也不用修改juststart;即，只要程序没关闭，都只有一个origin，就是船的初始位置
     # 输出为轨迹坐标m为单位，全局起始位置，以及轨迹相对起始位置的m为单位的坐标
      */
+    @Override
     public LonsLatsTrans lonsLatsTrans(List<Double[]> ptsDesiredArray,Boolean justStart){
 
         LonsLatsTrans lonsLatsTrans = new LonsLatsTrans();
@@ -306,20 +262,21 @@ public class motionServiceImpl implements motionService {
         }
 
         if(justStart){
-            origin = (ptsMDesiredArray.get(0));
+            ship.setOrigin(ptsMDesiredArray.get(0));
         }
 
         for(double[] xyCoord : ptsMDesiredArray) {
-            double[] xRelaYRela = {xyCoord[0] - origin[0], xyCoord[1] - origin[1]};
+            double[] xRelaYRela = {xyCoord[0] - ship.getOrigin()[0], xyCoord[1] - ship.getOrigin()[1]};
             ptsRelaMDesiredArray.add(xRelaYRela);
         }
 
-        lonsLatsTrans.setOrigin(origin);
+        lonsLatsTrans.setOrigin(ship.getOrigin());
         lonsLatsTrans.setPtsMDesiredArray(ptsMDesiredArray);
         lonsLatsTrans.setPtsRelaMDesiredArray(ptsRelaMDesiredArray);
         return lonsLatsTrans;
     }
 
+    @Override
     public WindForce windForce(double u,double v,double faiDeg,double winDirnInpDeg,double winSpdInp){
         WindForce windForce = new WindForce();
 
@@ -360,7 +317,8 @@ public class motionServiceImpl implements motionService {
 //        double[][] B = new double[19][7];
 //        double[][] C = new double[19][7];
 
-        // ... 这里填充Isherwood数据库的具体数值 ...又是魔法值
+        // ... 这里填充Isherwood数据库的具体数值 ...
+        // 又是魔法值
         double[][] A = {{2.152, -5.000, 0.243, -0.164, 0.000, 0.000, 0.000},
                 {1.714, -3.330, 0.145, -0.121, 0.000, 0.000, 0.000},
                 {1.818, -3.970, 0.211, -0.143, 0.000, 0.000, 0.033},
@@ -499,6 +457,7 @@ public class motionServiceImpl implements motionService {
     }
 
     //current_relative
+    @Override
     public CurrentRelative currentRelative(double u,double v,double faiDeg,double curnDirnInpDeg,double curnSpdInp){
         CurrentRelative currentRelative = new CurrentRelative();
         double relativeCurnDirnDeg = curnDirnInpDeg - faiDeg;
@@ -518,6 +477,7 @@ public class motionServiceImpl implements motionService {
     //current_force
 
     //计算波浪漂移力  nmda为波长，单位m, Wave_Dirn_inp_deg为浪的绝对方向，与风向定义相同，Wave_height为波高，是峰谷之差
+    @Override
     public WaveForce waveForce(double faiDeg,double waveNmda,double waveDirnInpDeg,double waveHeight){
         WaveForce waveForce = new WaveForce();
         double waveDirnEncDeg = faiDeg + waveDirnInpDeg;
@@ -557,7 +517,8 @@ public class motionServiceImpl implements motionService {
         return waveForce;
     }
 
-    //prop_rudder，缺参数
+    //prop_rudder，这个函数有问题，缺参数
+    @Override
     public PropRudder propRudder(double u,double v,double rRad,double derta){
         PropRudder propRudder = new PropRudder();
         double nP = 50;
@@ -647,6 +608,7 @@ public class motionServiceImpl implements motionService {
     //# 输入u,v,r为t时刻的速度，dt为步长
     //# 四阶龙格库塔法是为了求出4个加速度，每一阶的输入状态需要更新
     //RongeKuta
+    @Override
     public RongeKuta rongeKuta(double u,double v,double rRad,double uAcc,double vAcc,double rAccRad,double x,double y,
                           double faiDeg,double winDirnInpDeg,double winSpdInp,double curnDirnInpDeg,double curnSpdInp){
         double faiRad = faiDeg * Math.PI / 180.0;
@@ -734,11 +696,12 @@ public class motionServiceImpl implements motionService {
     //    # XH,YH,NH需要使用ur,vr计算，因是对水的水动力
     //    # Xwd,Ywd,Nwd需要使用u,v计算，因为风是对地
     //    # Xp,Yp,Np需要使用ur,vr计算
+    @Override
     public double[] f(double u,double v,double rRad,double uAcc,double vAcc,double rAccRad,
     double faiDeg,double winDirnInpDeg,double winSpdInp,double curnDirnInpDeg,double curnSpdInp){
         double Xwd, Ywd, Nwd, winDirnEncDeg, winSpdEnc, winThetaEnc;
         //# 风力与流体速度和方向无关
-        if(windSwitch){
+        if(ship.getWindSwitch()){
             WindForce windForce = windForce(u, v, faiDeg, winDirnInpDeg, winSpdInp);
             Xwd = windForce.getXwd();
             Ywd = windForce.getYwd();
@@ -757,8 +720,8 @@ public class motionServiceImpl implements motionService {
 
         double Xwv, Ywv, Nwv;
         //# 暂时先考虑浪与时间无关
-        if (waveSwitch){
-            WaveForce waveForce = waveForce(faiDeg, waveNmda, waveDirnInpDeg, waveHeight);
+        if (ship.getWindSwitch()){
+            WaveForce waveForce = waveForce(faiDeg, ship.getWaveNmda(), ship.getWaveDirnInpDeg(), ship.getWaveHeight());
             Xwv=waveForce.getXwv();
             Ywv=waveForce.getYwv();
             Nwv=waveForce.getNwv();
@@ -770,7 +733,7 @@ public class motionServiceImpl implements motionService {
 
         double ur, vr, uc, vc;
         //# 船舶运动相对水流的速度
-        if (curnSwitch) {
+        if (ship.getCurnSwitch()) {
             CurrentRelative currentRelative = currentRelative(u, v, faiDeg, curnDirnInpDeg, curnSpdInp);
             ur = currentRelative.getUr();
             vr = currentRelative.getVr();
@@ -822,6 +785,7 @@ public class motionServiceImpl implements motionService {
 
     //cal_pos
     // 在某状态u,v,r下，求解位置量导数x_,y_fai_
+    @Override
     public double[] calPos(double u,double v,double r,double faiDeg){
         double faiRad = faiDeg * Math.PI/180;
         double x_ = u*Math.cos(faiRad) - v*Math.sin(faiRad);
@@ -833,6 +797,7 @@ public class motionServiceImpl implements motionService {
 
     //getXYNHformuvr
     //根据状态值，计算XH，YH，NH，只是用于SVR辨识前的检验，不是运动预报; 考虑无风的情况, 且假设流速为0
+    @Override
     public GetXYNHformuvr getXYNHformuvr(double u,double v,double rRad,double u_,double v_,double r_,
                                          double XP,double YP,double NP,double XR,double YR,double NR){
         double uc = 0.0;
@@ -851,6 +816,7 @@ public class motionServiceImpl implements motionService {
 
     //calcuCxwCywCnw
     //根据公式直接把Cxw，Cyw, Cnw的几个值弄出来，输出13个数据
+    @Override
     public CalcuCxwCywCnw calcuCxwCywCnw(double u,double v,double rRad,double V){
         double[] Cxw = {u * u, v * v, Math.pow(ship.getL(), 2) * Math.pow(rRad, 2)};
         double[] Cyw = {V * v, ship.getL() * V * rRad, Math.abs(v) * v, ship.getL() * Math.abs(v) * rRad, Math.pow(ship.getL(), 2) * Math.abs(rRad) * rRad};
@@ -865,6 +831,7 @@ public class motionServiceImpl implements motionService {
 
     //calcuCxwCywCnw_with_moreparams
     //按照闫建喜的公式做的新的，直接用u作为特征速度
+    @Override
     public CalcuCxwCywCnw calcuCxwCywCnwWithMoreParams(double u0,double u,double v,double rRad,double uAcc,double vAcc,double rAccRad){
         double dertaU = u -u0;
         double[] Cxw = {u * u, u * dertaU, dertaU * dertaU, ship.getL() * uAcc, v * v, Math.pow(ship.getL(), 2) * Math.pow(rRad, 2), ship.getL() * v * rRad};
@@ -878,11 +845,16 @@ public class motionServiceImpl implements motionService {
         return calcuCxwCywCnw;
     }
 
+    //以下三个方法都是具体航行仿真了
     //oneround
     //跑一轮，在设定油门，舵角的情况下，跑一次直航50s平稳后回转
+    public void oneround(){
+        ship = init();
 
+    }
 
     //oneZ
+
 
     //TestXYNJ
 
