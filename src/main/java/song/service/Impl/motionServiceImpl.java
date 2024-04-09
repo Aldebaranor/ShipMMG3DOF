@@ -1,7 +1,9 @@
 package song.service.Impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import song.config.ShipConfig;
 import song.model.*;
 import song.service.motionService;
 import org.apache.commons.math3.util.FastMath;
@@ -26,38 +28,20 @@ public class motionServiceImpl implements motionService {
     private double[] w2 = {-20.887054, 55.168673, -0.238010, -1.326375, 0.054549, -3.853117, 0.147229};
     private double[] w3 = {-18.293072, -12.258180, -9.280442, 0.226242, 0.137077, -0.035439, -0.289610};
 
+    //从配置文件中输入船体属性参数
+    @Autowired
+    private ShipConfig shipConfig = new ShipConfig();
+
     @Override
     public Ship init(){
-//        //船体属性
-//        ship.setL();
-//        ship.setB();
-//        ship.setD();
-//        ship.setRou();
-//        ship.setRouAir();
-//        ship.setG();
-//        ship.setW();
-//        ship.setM();
-//        ship.setCb();
-//        ship.setC();
-//        ship.setKX();
-//        ship.setNMda2();
-//        ship.setTao_();
-//        ship.setLv();
-//        ship.setXG();
-//        ship.setMX();
-//        ship.setMY();
-//        ship.setIzz();
-//        ship.setJzz();
-//        //桨属性
-//        ship.setDPod();
-//        ship.setChange();
+
         //船体属性
-        ship.setL(10.0);
-        ship.setB(3.5);
-        ship.setD(0.71);
-        ship.setRou(1000.0);
-        ship.setRouAir(1.29);
-        ship.setG(9.8);
+        ship.setL(shipConfig.getL());
+        ship.setB(shipConfig.getB());
+        ship.setD(shipConfig.getD());
+        ship.setRou(shipConfig.getRou());
+        ship.setRouAir(shipConfig.getRouAir());
+        ship.setG(shipConfig.getG());
         ship.setW();
         ship.setM();
         ship.setCb();
@@ -67,16 +51,16 @@ public class motionServiceImpl implements motionService {
         ship.setNMda2();
         ship.setTao_();
         ship.setLv();
-        ship.setXG(-1.0);
-        ship.setMX(0.0);
-        ship.setMY(0.0);
-        ship.setIzz(0.0);
+        ship.setXG(shipConfig.getXG());
+        ship.setMX(shipConfig.getMX());
+        ship.setMY(shipConfig.getMY());
+        ship.setIzz(shipConfig.getIzz());
         ship.setJzz();
         //桨属性
-        ship.setDPod(0.46);
-        ship.setChange(5.0);
-        ship.setTGanxian(2.0);
-        ship.setTSuperStru(1.0);
+        ship.setDPod(shipConfig.getDPod());
+        ship.setChange(shipConfig.getChange());
+        ship.setTGanxian(shipConfig.getTGanxian());
+        ship.setTSuperStru(shipConfig.getTSuperStru());
         ship.setShipAreaT();
         ship.setShipAreaL();
         ship.setShipAreaSS();
@@ -109,36 +93,36 @@ public class motionServiceImpl implements motionService {
         N_vvr = w3[5] / 100.0;
         N_vrr = w3[6] / 100.0;
 
-        ship.setT(0.0);
-        ship.setYoumen(0.60);
+        ship.setT(shipConfig.getT());
+        ship.setYoumen(shipConfig.getYoumen());
         //实际进入计算的舵角
-        ship.setDertaDegInput(20.0);
+        ship.setDertaDegInput(shipConfig.getDertaDegInput());
         //设定的舵角
-        ship.setDertaDeg(0.0);
-        ship.setWindSwitch(false);
-        ship.setWinDirnInpDeg(90.0);
+        ship.setDertaDeg(shipConfig.getDertaDeg());
+        ship.setWindSwitch(shipConfig.getWindSwitch());
+        ship.setWinDirnInpDeg(shipConfig.getWinDirnInpDeg());
         //单位m/s
-        ship.setWinSpdInp(2.0);
-        ship.setCurnSwitch(false);
+        ship.setWinSpdInp(shipConfig.getWinSpdInp());
+        ship.setCurnSwitch(shipConfig.getCurnSwitch());
         //180度减速，0度加速，90度北移，-90度南移
-        ship.setCurnDirnInpDeg(-90.0);
+        ship.setCurnDirnInpDeg(shipConfig.getCurnDirnInpDeg());
         //流速不要超过0.5
-        ship.setCurnSpdInp(0.5);
-        ship.setWindSwitch(false);
+        ship.setCurnSpdInp(shipConfig.getCurnSpdInp());
+        ship.setWaveSwitch(shipConfig.getWaveSwitch());
         //波长
         ship.setWaveNmda(ship.getL());
         //波高波向，与浪向相同
-        ship.setWaveDirnInpDeg(180.0);
+        ship.setWaveDirnInpDeg(shipConfig.getWaveDirnInpDeg());
         //波高
-        ship.setWaveHeight(0.35);
+        ship.setWaveHeight(shipConfig.getWaveHeight());
         //是否开启调试绘制
-        ship.setDrowingSwitch(true);
+        ship.setDrawingSwitch(shipConfig.getDrawingSwitch());
         //打舵是根据轨迹自动控制，否：舵角由人指定
-        ship.setControlSwitch(false);
+        ship.setControlSwitch(shipConfig.getControlSwitch());
         //是否真实TCP通信
-        ship.setIsRealTCPUDP(false);
+        ship.setIsRealTCPUDP(shipConfig.getIsRealTCPUDP());
         //是否开始仿真
-        ship.setIsStartSimulation(false);
+        ship.setIsStartSimulation(shipConfig.getIsStartSimulation());
 
         //状态量
         //实时位置
@@ -175,12 +159,12 @@ public class motionServiceImpl implements motionService {
 
     //输入船舶对流速度，转速，螺旋桨转速
     //输出船舶螺旋桨三个力和舵的三个力，由于舵用到一些桨的数据，因此放一起
-    //本函数缺参数，也没用上这个函数，可以删除
+    //TODO:本函数缺参数
     @Override
-    public Void doublePropRudderChange(double ur,double vr,double rRad,double n,double dertaDeg) {
+    public DoublePropRudderChange doublePropRudderChange(double ur,double vr,double rRad,double n,double dertaDeg) {
         double shipSpd = Math.sqrt(ur * ur + vr * vr);
         if (shipSpd == 0.0) {
-            shipSpd = 0.1;
+            shipSpd = 0.01;
         }
         double shipBeta = Math.asin(-vr / shipSpd);
         double dertaRad = dertaDeg * Math.PI / 180;
@@ -198,9 +182,10 @@ public class motionServiceImpl implements motionService {
         double Tl = (1 - mTp) * ship.getRou() * Math.pow(n, 2) * Math.pow(ship.getDPod(), 4) * KT;
         double Tr = (1 - mTp) * ship.getRou() * Math.pow(n, 2) * Math.pow(ship.getDPod(), 4) * KT;
 
-        double xP = Tl + Tr;
-        double yP = 0;
-//        double nP = -Tl * ship.getYPRL() - Tr*ship.getYPRR(); yprl和yrrr为舵参数没有
+        double XP = Tl + Tr;
+        double YP = 0;
+        double NP = 0;
+//        double NP = -Tl * ship.getYPRL() - Tr*ship.getYPRR(); yprl和yrrr为舵参数没有
 
         //计算舵力部分
         double epsilon = 0.909;//3-5-35 epsilon = (1 - w_R0)/(1 - w_p0)  舵除有效来流相对桨除比值
@@ -212,21 +197,34 @@ public class motionServiceImpl implements motionService {
         double mGamma = 0.9;//3-5-114,整流系数，采用code的值
         double mLr = -0.95;//3-5-109
 //        double mFa = (6.13*ship.getNMdaRud())/(ship.getNMdaRud()+2.25);//3-5-11,nmda_Rud为舵参数，没有
+        double mFa = 0;
         double Kai = 0.6/epsilon;
 //        double s = 1.0-uProp/(n*ship.getluojubi*ship.getDPod());//luojubi为桨参数，没有
 
         double alfaR = dertaRad - mGamma*(shipBeta-mLr*rRad*ship.getL()/shipSpd);
         //以下参数均需要舵和桨参数，都没有
-//        double FN = -0.5*ship.getRou()*ship.getARRud()*mFa*Math.pow()
-//        XR = (1 - m_tR) * FN * math.sin(Derta_rad) * 2            # 3-5-122
-//        YR = (1 + m_aH) * FN * math.cos(Derta_rad) * 2
-//        NR_l = (self.xR + m_aH * xH) * FN * math.cos(Derta_rad) + XR * self.yPR_l
-//        NR_r = (self.xR + m_aH * xH) * FN * math.cos(Derta_rad) + XR * self.yPR_r
+        double XR,YR,NR_l,NR_r,NR;
+//        double FN = -0.5*ship.getRou()*ship.getARRud()*mFa*Math.pow(ur,2)*Math.sin(alfaR);
+        double FN = 0.0;
+        XR = (1 - mTr) * FN * Math.sin(dertaRad) * 2;          // 3-5-122
+        YR = (1 + mAh) * FN * Math.cos(dertaRad) * 2;
+//        NR_l = (xR + mAh * xH) * FN * Math.cos(dertaRad) + XR * self.yPR_l
+//        NR_r = (xR + mAh * xH) * FN * Math.cos(dertaRad) + XR * self.yPR_r
 //        NR = NR_l + NR_r
-//
-//
-//        return  XP, YP, NP, XR, YR, NR
-        return null;
+
+        //参数缺少，暂时设0处理
+        XR = 0.0;
+        YR = 0.0;
+        NR = 0.0;
+
+        DoublePropRudderChange doublePropRudderChange = new DoublePropRudderChange();
+        doublePropRudderChange.setXP(XP);
+        doublePropRudderChange.setYP(YP);
+        doublePropRudderChange.setNP(NP);
+        doublePropRudderChange.setXR(XR);
+        doublePropRudderChange.setYR(YR);
+        doublePropRudderChange.setNR(NR);
+        return doublePropRudderChange;
     }
 
     //用于检查是否跨越30的整数倍的辅助函数
@@ -758,8 +756,8 @@ public class motionServiceImpl implements motionService {
         //# Xp, Yp, Np = self.diaocang_prop_mthod2(ur, vr, r_rad, self.youmen, self.Derta_deg)
 
         double XP, YP, NP, XR, YR, NR;
-        //这个函数缺参数，暂时用0
-        //DoublePropRudderChangde doublePropRudderChangde = doublePropRudderChange(ur, vr, rRad, ship.getN(), ship.getDertaDeg())
+        //TODO:这个函数缺参数，暂时用0处理，且入参 N 没有定义，推测为桨的转速
+        DoublePropRudderChange doublePropRudderChangde = doublePropRudderChange(ur, vr, rRad, ship.getN(), ship.getDertaDeg());
         XP = 0.0;
         YP = 0.0;
         NP = 0.0;
@@ -845,18 +843,5 @@ public class motionServiceImpl implements motionService {
         calcuCxwCywCnw.setCyw(Cyw);
         return calcuCxwCywCnw;
     }
-
-    //以下三个方法都是具体航行仿真了
-    //oneround
-    //跑一轮，在设定油门，舵角的情况下，跑一次直航50s平稳后回转
-    public void oneround(){
-        ship = init();
-
-    }
-
-    //oneZ
-
-
-    //TestXYNJ
 
 }

@@ -72,6 +72,8 @@ public class Ship implements Serializable {
     private Double dPod;
     //每秒可调整角度
     private Double change;
+    //todo:缺此参数，推测为桨的转速
+    private Double n;
 
     //计算风力相关参数
     //干弦
@@ -101,7 +103,7 @@ public class Ship implements Serializable {
     private Double waveNmda;
     private Double waveDirnInpDeg;
     private Double waveHeight;
-    private Boolean drowingSwitch;
+    private Boolean drawingSwitch;
     private Boolean controlSwitch;
     private Boolean isRealTCPUDP;
     private Boolean isStartSimulation;

@@ -34,7 +34,7 @@ public interface motionService {
 
     Boolean isCrossingMultipleOf30(double prevValue,double currentValue);
 
-    Void doublePropRudderChange(double ur,double vr,double rRad,double n,double dertaDeg);
+    DoublePropRudderChange doublePropRudderChange(double ur,double vr,double rRad,double n,double dertaDeg);
 
 
 }

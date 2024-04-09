@@ -16,7 +16,7 @@ public class Simulation {
     private motionService motionService;
 
     //跑一轮，在设定油门，舵角的情况下，跑一次直航50s平稳后回转
-    public void oneround(double n,double derta,double pathFinal){
+    public void oneround(double n,double derta,String pathFinal){
         Ship ship = motionService.init();
 //        ship.setN() = n;
         ship.setDertaDegInput(derta);
@@ -205,7 +205,8 @@ public class Simulation {
             ship.setDertaDegArray(dertaDegArray);
 
         }
-
+//        要打印的数据可以在这里打印
+//        System.out.println("");
         boolean flagSwitchDraw = false;
         if(flagSwitchDraw){
             //TODO:绘图功能，可以采用java Swing或者JavaFX Charts、JFreeChart
@@ -219,7 +220,7 @@ public class Simulation {
 
     //跑Z形操舵试验，在设定油门，舵角的情况下，跑一次直航50s平稳后开始进行Z形操舵试验
     //Derta为Z形操舵的目标舵角，为正数
-    public void oneZ(double n,double dertaZ,double pathFinal){
+    public void oneZ(double n,double dertaZ,String pathFinal){
         Ship ship = motionService.init();
 //        ship.setN() = n;
         //舵角切换次数标识符，case_n在1,3,5时要打右舵，2,4时打左舵，6时停止
