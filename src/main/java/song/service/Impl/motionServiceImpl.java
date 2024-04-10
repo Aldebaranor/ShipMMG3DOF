@@ -18,8 +18,6 @@ import static song.model.Contents.dt;
 public class motionServiceImpl implements motionService {
 
     Ship ship = new Ship();
-    //todo:从外部输入参数 w1 w2 w3 船体属性 桨属性
-
 
     private double X0, Xu, X_uu, X_u_De, X_vv, X_rr, X_vr;
     private double Y_v, Y_vvv, Y_v_De, Y_r, Y_rrr, Y_vvr, Y_vrr;
@@ -36,6 +34,17 @@ public class motionServiceImpl implements motionService {
     public Ship init(){
 
         //船体属性
+        ship.setSuochibi(shipConfig.getSuochibi());
+        ship.setPanmianbi(shipConfig.getPanmianbi());
+        ship.setLuojubi(shipConfig.getLuojubi());
+        ship.setMiuR(shipConfig.getMiuR());
+        ship.setNmdaRud(shipConfig.getNmdaRud());
+        ship.setARRud();
+        ship.setBRud();
+        ship.setHRud();
+        ship.setXR();
+        ship.setYPRL();
+        ship.setYPRR();
         ship.setL(shipConfig.getL());
         ship.setB(shipConfig.getB());
         ship.setD(shipConfig.getD());
@@ -45,19 +54,19 @@ public class motionServiceImpl implements motionService {
         ship.setW();
         ship.setM();
         ship.setCb();
-//        ship.setU0();
+        ship.setU0(shipConfig.getU0());
         ship.setC();
         ship.setKX();
         ship.setNMda2();
         ship.setTao_();
         ship.setLv();
-        ship.setXG(shipConfig.getXG());
+        ship.setXG();
         ship.setMX(shipConfig.getMX());
         ship.setMY(shipConfig.getMY());
         ship.setIzz(shipConfig.getIzz());
         ship.setJzz();
         //桨属性
-        ship.setDPod(shipConfig.getDPod());
+        ship.setDPod();
         ship.setChange(shipConfig.getChange());
         ship.setTGanxian(shipConfig.getTGanxian());
         ship.setTSuperStru(shipConfig.getTSuperStru());
@@ -159,7 +168,6 @@ public class motionServiceImpl implements motionService {
 
     //输入船舶对流速度，转速，螺旋桨转速
     //输出船舶螺旋桨三个力和舵的三个力，由于舵用到一些桨的数据，因此放一起
-    //TODO:本函数缺参数
     @Override
     public DoublePropRudderChange doublePropRudderChange(double ur,double vr,double rRad,double n,double dertaDeg) {
         double shipSpd = Math.sqrt(ur * ur + vr * vr);
@@ -184,8 +192,8 @@ public class motionServiceImpl implements motionService {
 
         double XP = Tl + Tr;
         double YP = 0;
-        double NP = 0;
-//        double NP = -Tl * ship.getYPRL() - Tr*ship.getYPRR(); yprl和yrrr为舵参数没有
+        //yprl和yrrr为舵参数
+        double NP = -Tl * ship.getYPRL() - Tr*ship.getYPRR();
 
         //计算舵力部分
         double epsilon = 0.909;//3-5-35 epsilon = (1 - w_R0)/(1 - w_p0)  舵除有效来流相对桨除比值
@@ -193,29 +201,27 @@ public class motionServiceImpl implements motionService {
         double mAh=0.262;
         double mXh = -0.433;
         double xH = mXh*ship.getL();
-//        double mEta = ship.getDPod()/ship.getHRud();getHRud为舵参数没有
+        //getHRud为舵参数
+        double mEta = ship.getDPod()/ship.getHRud();
         double mGamma = 0.9;//3-5-114,整流系数，采用code的值
         double mLr = -0.95;//3-5-109
-//        double mFa = (6.13*ship.getNMdaRud())/(ship.getNMdaRud()+2.25);//3-5-11,nmda_Rud为舵参数，没有
-        double mFa = 0;
+        //nmda_Rud为舵参数
+        double mFa = (6.13*ship.getNmdaRud())/(ship.getNmdaRud()+2.25);//3-5-11
         double Kai = 0.6/epsilon;
-//        double s = 1.0-uProp/(n*ship.getluojubi*ship.getDPod());//luojubi为桨参数，没有
+        //luojubi为桨参数
+        double s = 1.0-uProp/(n*ship.getLuojubi()*ship.getDPod());
 
         double alfaR = dertaRad - mGamma*(shipBeta-mLr*rRad*ship.getL()/shipSpd);
-        //以下参数均需要舵和桨参数，都没有
+
         double XR,YR,NR_l,NR_r,NR;
-//        double FN = -0.5*ship.getRou()*ship.getARRud()*mFa*Math.pow(ur,2)*Math.sin(alfaR);
-        double FN = 0.0;
+        double FN = -0.5*ship.getRou()*ship.getARRud()*mFa*Math.pow(ur,2)*Math.sin(alfaR);
+
         XR = (1 - mTr) * FN * Math.sin(dertaRad) * 2;          // 3-5-122
         YR = (1 + mAh) * FN * Math.cos(dertaRad) * 2;
-//        NR_l = (xR + mAh * xH) * FN * Math.cos(dertaRad) + XR * self.yPR_l
-//        NR_r = (xR + mAh * xH) * FN * Math.cos(dertaRad) + XR * self.yPR_r
-//        NR = NR_l + NR_r
+        NR_l = (ship.getXR() + mAh * xH) * FN * Math.cos(dertaRad) + XR * ship.getYPRL();
+        NR_r = (ship.getXR() + mAh * xH) * FN * Math.cos(dertaRad) + XR * ship.getYPRR();
+        NR = NR_l + NR_r;
 
-        //参数缺少，暂时设0处理
-        XR = 0.0;
-        YR = 0.0;
-        NR = 0.0;
 
         DoublePropRudderChange doublePropRudderChange = new DoublePropRudderChange();
         doublePropRudderChange.setXP(XP);
@@ -316,8 +322,7 @@ public class motionServiceImpl implements motionService {
 //        double[][] C = new double[19][7];
 
         // ... 这里填充Isherwood数据库的具体数值 ...
-        // 又是魔法值
-        // todo：确认一下这里需不需要也改成外部输入
+        //魔法值
         double[][] A = {{2.152, -5.000, 0.243, -0.164, 0.000, 0.000, 0.000},
                 {1.714, -3.330, 0.145, -0.121, 0.000, 0.000, 0.000},
                 {1.818, -3.970, 0.211, -0.143, 0.000, 0.000, 0.033},

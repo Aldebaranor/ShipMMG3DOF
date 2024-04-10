@@ -33,13 +33,13 @@ public class Ship implements Serializable {
     //重力g
     private Double g;
     //设计排水量
-    private Double w;
+    private Double W;
     //船舶质量
     private Double m;
     //船舶排水体积系数
     private Double Cb;
     //
-//    private Double u0;
+    private Double u0;
     //船舶初稳性
     private Double gM;
     //船舶阻力系数
@@ -72,8 +72,25 @@ public class Ship implements Serializable {
     private Double dPod;
     //每秒可调整角度
     private Double change;
+    private Double panmianbi;
+    private Double luojubi;
     //todo:缺此参数，推测为桨的转速
     private Double n;
+
+    //2024.04.10 20:02新增参数
+    //没有注释
+    private Double suochibi;
+
+    //舵的参数
+    private Double ARRud;
+    private Double miuR;
+    private Double bRud;
+    private Double hRud;
+    private Double nmdaRud;
+
+    private Double xR;
+    private Double yPRL;
+    private Double yPRR;
 
     //计算风力相关参数
     //干弦
@@ -204,15 +221,15 @@ public class Ship implements Serializable {
 
     //计算船体参数get方法
     public void setW() {
-        this.w = 10 * rou;
+        this.W = 3495/(Math.pow(suochibi,3)) * rou;
     }
 
     public void setM() {
-        this.m = w;
+        this.m = W;
     }
 
     public void setCb() {
-        this.Cb = w/(l*b*d)/rou;
+        this.Cb = W/(l*b*d)/rou;
     }
 
     public void setC() {
@@ -238,6 +255,39 @@ public class Ship implements Serializable {
     public void setJzz() {
         this.Jzz = getM()/100*l*l*(33-76.85*getCb()*(1-0.784*getCb())+3.43*(1-0.63*getCb())*l/b);
     }
+
+    public void setXG(){
+        this.xG = -0.05 * l;
+    }
+
+    public void setDPod(){
+        this.dPod = 3.8 / suochibi;
+    }
+
+    public void setARRud(){
+        this.ARRud = 7.29 /(suochibi*suochibi);
+    }
+
+    public void setBRud(){
+        this.bRud = 2.229/suochibi;
+    }
+
+    public void setHRud(){
+        this.hRud = 3.27/suochibi;
+    }
+
+    public void setXR(){
+        this.xR = - l/2 *0.95;
+    }
+
+    public void setYPRL(){
+        this.yPRL = -b/4;
+    }
+
+    public void setYPRR(){
+        this.yPRR = b/4;
+    }
+
 
     //计算风力参数get方法
 

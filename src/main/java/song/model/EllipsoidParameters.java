@@ -22,7 +22,6 @@ public class EllipsoidParameters {
 
     public EllipsoidParameters() {
         // Default: wgs84
-        //todo:改成外部输入
         this.a = 6378137.0;
         this.e2 = 0.00669437999013;
         this.b = Math.sqrt(this.a * this.a * (1 - this.e2));

@@ -183,15 +183,6 @@ public class Simulation {
             List<Double> NwdArray = ship.getNwdArray();
             NwdArray.add(Nwd);
             ship.setNwdArray(NwdArray);
-//            List<Double> XwvArray = ship.getXwvArray();
-//            XwvArray.add(Xwv);
-//            ship.setXwvArray(XwvArray);
-//            List<Double> YwvArray = ship.getYwvArray();
-//            YwvArray.add(Ywv);
-//            ship.setYwvArray(YwvArray);
-//            List<Double> NwvArray = ship.getNwvArray();
-//            NwvArray.add(Nwv);
-//            ship.setNwvArray(NwvArray);
 
             List<Double> tArray = ship.getTArray();
             tArray.add(ship.getT());
@@ -209,12 +200,12 @@ public class Simulation {
 //        System.out.println("");
         boolean flagSwitchDraw = false;
         if(flagSwitchDraw){
-            //TODO:绘图功能，可以采用java Swing或者JavaFX Charts、JFreeChart
+            //绘图功能，可以采用java Swing或者JavaFX Charts、JFreeChart
         }else {
-            //TODO:绘图功能
+            //绘图功能
         }
 
-        //TODO：绘图文件保存
+        //绘图文件保存
 
     }
 
@@ -227,7 +218,7 @@ public class Simulation {
         int caseN = 0;
         while ((caseN<6&&dertaZ!=0)||(dertaZ==0&&ship.getT()<ship.getTMax())){
             double faiDegLast,faiDegNow;
-            //TODO：原python程序此处有逻辑错误，这两个变量不走第一个if是没有初始值的，这里暂时给个0，不知道具体给多少
+            //原python程序此处有逻辑错误，这两个变量不走第一个if是没有初始值的，这里暂时给个0，不知道具体给多少
             faiDegLast = 0;
             faiDegNow = 0;
             if(ship.getT()>ship.getTStable()){
@@ -443,12 +434,12 @@ public class Simulation {
 
         boolean flagSwitchDraw = false;
         if(flagSwitchDraw){
-            //TODO:绘图功能，可以采用java Swing或者JavaFX Charts、JFreeChart
+            //绘图功能，可以采用java Swing或者JavaFX Charts、JFreeChart
         }else {
-            //TODO:绘图功能
+            //绘图功能
         }
 
-        //TODO：绘图文件保存
+        //绘图文件保存
 
 
     }

@@ -12,20 +12,24 @@ import org.springframework.stereotype.Component;
 public class ShipConfig {
 
     //船体属性
+        private Double suochibi;
+        private Double change;
+        private Double panmianbi;
+        private Double luojubi;
+        private Double miuR;
+        private Double nmdaRud;
+
         private Double L;
         private Double B;
         private Double D;
         private Double Rou;
         private Double RouAir;
         private Double G;
-        //private double U0;
-        private Double XG;
+        private Double U0;
         private Double MX;
         private Double MY;
         private Double Izz;
         //桨属性
-        private Double DPod;
-        private Double Change;
         private Double TGanxian;
         private Double TSuperStru;
         private Double T;
