@@ -74,7 +74,7 @@ public class Ship implements Serializable {
     private Double change;
     private Double panmianbi;
     private Double luojubi;
-    //todo:缺此参数，推测为桨的转速
+    //桨的转速
     private Double n;
 
     //2024.04.10 20:02新增参数

@@ -22,8 +22,6 @@ public interface motionService {
 
     ShuiDongLiJiSuan shuiDongLiJiSuan(double u0, double ur, double vr, double rRad, double uAcc, double vAcc, double rAcc);
 
-    PropRudder propRudder(double u,double v,double rRad,double derta);
-
     WaveForce waveForce(double faiDeg,double waveNmda,double waveDirnInpDeg,double waveHeight);
 
     CurrentRelative currentRelative(double u,double v,double faiDeg,double curnDirnInpDeg,double curnSpdInp);

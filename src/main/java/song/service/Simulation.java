@@ -187,10 +187,9 @@ public class Simulation {
             List<Double> tArray = ship.getTArray();
             tArray.add(ship.getT());
             ship.setTArray(tArray);
-            //todo：模型的n
-//            List<Double> nArray = ship.getNArray();
-//            nArray.add(ship.getN());
-//            ship.setYwdArray(nArray);
+            List<Double> nArray = ship.getNArray();
+            nArray.add(ship.getN());
+            ship.setYwdArray(nArray);
             List<Double> dertaDegArray = ship.getDertaDegArray();
             dertaDegArray.add(ship.getDertaDeg());
             ship.setDertaDegArray(dertaDegArray);
@@ -420,10 +419,9 @@ public class Simulation {
             List<Double> tArray = ship.getTArray();
             tArray.add(ship.getT());
             ship.setTArray(tArray);
-            //todo:模型的N
-//            List<Double> nArray = ship.getNArray();
-//            nArray.add(ship.getN());
-//            ship.setYwdArray(nArray);
+            List<Double> nArray = ship.getNArray();
+            nArray.add(ship.getN());
+            ship.setYwdArray(nArray);
             List<Double> dertaDegArray = ship.getDertaDegArray();
             dertaDegArray.add(ship.getDertaDeg());
             ship.setDertaDegArray(dertaDegArray);

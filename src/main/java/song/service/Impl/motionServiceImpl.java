@@ -39,6 +39,7 @@ public class motionServiceImpl implements motionService {
         ship.setLuojubi(shipConfig.getLuojubi());
         ship.setMiuR(shipConfig.getMiuR());
         ship.setNmdaRud(shipConfig.getNmdaRud());
+        ship.setN(shipConfig.getN());
         ship.setARRud();
         ship.setBRud();
         ship.setHRud();
@@ -210,11 +211,23 @@ public class motionServiceImpl implements motionService {
         double Kai = 0.6/epsilon;
         //luojubi为桨参数
         double s = 1.0-uProp/(n*ship.getLuojubi()*ship.getDPod());
+        double Gs,K;
+        if(s!=1.0){
+             Gs = mEta * Kai * s * (2.0 - s *(2.0-Kai)) / Math.pow((1.0-s),2);
+        }else {
+            Gs = 0;
+        }
+        if(dertaDeg>=0){
+            K = 1.0665;
+        }else {
+            K = 0.935;
+        }
+        double UR = uProp * Math.sqrt(1.0 + K * Gs);
 
         double alfaR = dertaRad - mGamma*(shipBeta-mLr*rRad*ship.getL()/shipSpd);
 
         double XR,YR,NR_l,NR_r,NR;
-        double FN = -0.5*ship.getRou()*ship.getARRud()*mFa*Math.pow(ur,2)*Math.sin(alfaR);
+        double FN = -0.5*ship.getRou()*ship.getARRud()*mFa*Math.pow(UR,2)*Math.sin(alfaR);
 
         XR = (1 - mTr) * FN * Math.sin(dertaRad) * 2;          // 3-5-122
         YR = (1 + mAh) * FN * Math.cos(dertaRad) * 2;
@@ -317,12 +330,15 @@ public class motionServiceImpl implements motionService {
 
         //# Create Isherwood database # Isherwood数据库，0到180度，10度一档
         double[] winDirn = new double[19];
+        for (int i = 0; i <= 180; i += 10) {
+            winDirn[i / 10] = i * Math.PI / 180;
+        }
 //        double[][] A = new double[19][7];
 //        double[][] B = new double[19][7];
 //        double[][] C = new double[19][7];
 
         // ... 这里填充Isherwood数据库的具体数值 ...
-        //魔法值
+        // 角度转弧度
         double[][] A = {{2.152, -5.000, 0.243, -0.164, 0.000, 0.000, 0.000},
                 {1.714, -3.330, 0.145, -0.121, 0.000, 0.000, 0.000},
                 {1.818, -3.970, 0.211, -0.143, 0.000, 0.000, 0.033},
@@ -477,9 +493,6 @@ public class motionServiceImpl implements motionService {
         return currentRelative;
     }
 
-    //流来向的定义与浪向相同；由于没有准确的系数，此方式废除
-    //current_force
-
     //计算波浪漂移力  nmda为波长，单位m, Wave_Dirn_inp_deg为浪的绝对方向，与风向定义相同，Wave_height为波高，是峰谷之差
     @Override
     public WaveForce waveForce(double faiDeg,double waveNmda,double waveDirnInpDeg,double waveHeight){
@@ -519,59 +532,6 @@ public class motionServiceImpl implements motionService {
         waveForce.setYwv(Ywv);
         waveForce.setNwv(Nwv);
         return waveForce;
-    }
-
-    //prop_rudder，这个函数有问题，缺参数，也没用上，可以删除
-    @Override
-    public PropRudder propRudder(double u,double v,double rRad,double derta){
-        PropRudder propRudder = new PropRudder();
-        double nP = 50;
-        double rudderAngle = derta * Math.PI/180;
-        //合速度
-        double U = FastMath.hypot(u, v); // 合速度
-        double beta = 0.0;
-        if (U != 0.0) {
-            beta = FastMath.asin(-v / U); // 斜航角
-        }
-
-        double v_ = 0.0;
-        if (U != 0.0) {
-            v_ = v / U; // 无次元化横方向速度
-        }
-        double r_ = 0.0;
-        if (U != 0.0) {
-            r_ = rRad * ship.getL() / U; // 无次元化回转角速度
-        }
-        double J = 0.0;
-//        if (nP != 0.0) {
-//            J = (1 - ship.getWpo()) * u / (nP * ship.getDp()); // 前进常数 wpo 和 dp都没定义
-//        }
-//        double K_T = k0 + k1 * J + k2 * Math.pow(J, 2); // 斯特劳斯系数Kx 都没有定义
-//        double v_R = U * γR * (beta - lr_ * r_); // 舵流入横方向速度成分
-//        double u_R;
-//        if (J == 0.0) {
-//            u_R = FastMath.sqrt(η * Math.pow(κ * ϵ * 8.0 * k0 * Math.pow(n_p, 2) * Math.pow(Dp, 4) / pi, 2));
-//        } else {
-//            u_R = u * (1 - wpo) * ϵ * FastMath.sqrt(η * Math.pow(1.0 + κ * (FastMath.sqrt(1.0 + 8.0 * K_T / (pi * Math.pow(J, 2))) - 1), 2) + (1 - η)); // 舵流入前后方向速度成分
-//        }
-//        double U_R = FastMath.hypot(u_R, v_R); // 舵流入速度
-//        double alpha_R = rudderAngle - FastMath.atan2(v_R, u_R); // 舵流入角度
-//
-//        double F_N = 0.5 * AR * ρ * fa * Math.pow(U_R, 2) * FastMath.sin(alpha_R);
-//
-//        double X_R = -(1 - tR) * F_N * FastMath.sin(rudderAngle);
-//        double X_P = (1 - tP) * ρ * K_T * Math.pow(n_p, 2) * Math.pow(Dp, 4);
-//
-//        double Y_R = -(1 + aH) * F_N * FastMath.cos(rudderAngle);
-//
-//        double N_R = (-0.5 + aH * xH) * F_N * FastMath.cos(rudderAngle);
-//
-//        double Xp = X_R + X_P;
-//        double Yp = Y_R;
-//        double Np = N_R;
-
-//        return propRudder;
-        return  null;
     }
 
     //shuidonglijisuan_more_params
@@ -752,24 +712,21 @@ public class motionServiceImpl implements motionService {
 
         double XH, YH, NH;
         //这里缺u0，暂时用0
-        ShuiDongLiJiSuan shuiDongLiJiSuan = shuiDongLiJiSuan(0.0,ur, vr, rRad, uAcc, vAcc, rAccRad);
+        ShuiDongLiJiSuan shuiDongLiJiSuan = shuiDongLiJiSuan(ship.getU0(),ur, vr, rRad, uAcc, vAcc, rAccRad);
         //# 水动力计算用绝对速度，不要用对水速度就可以
         XH = shuiDongLiJiSuan.getXH();
         YH = shuiDongLiJiSuan.getYH();
         NH = shuiDongLiJiSuan.getNH();
 
-        //# Xp, Yp, Np = self.diaocang_prop_mthod2(ur, vr, r_rad, self.youmen, self.Derta_deg)
-
         double XP, YP, NP, XR, YR, NR;
-        //TODO:这个函数缺参数，暂时用0处理，且入参 N 没有定义，推测为桨的转速
-        DoublePropRudderChange doublePropRudderChangde = doublePropRudderChange(ur, vr, rRad, ship.getN(), ship.getDertaDeg());
-        XP = 0.0;
-        YP = 0.0;
-        NP = 0.0;
-        XR = 0.0;
-        YR = 0.0;
-        NR = 0.0;
-        //# Xp, Yp, Np = self.prop_rudder(u, v, r_rad, self.Derta)
+
+        DoublePropRudderChange doublePropRudderChange = doublePropRudderChange(ur, vr, rRad, ship.getN(), ship.getDertaDeg());
+        XP = doublePropRudderChange.getXP();
+        YP = doublePropRudderChange.getYP();
+        NP = doublePropRudderChange.getNP();
+        XR = doublePropRudderChange.getXR();
+        YR = doublePropRudderChange.getYR();
+        NR = doublePropRudderChange.getNR();
 
         double u_ = ( XP + XR + XH + Xwd + Xwv + (ship.getM() + ship.getMY()) * (vr * rRad + ship.getXG() * Math.pow(rRad,2)) + (ship.getM() + ship.getMX()) * rRad * vc)/(ship.getM() + ship.getMX());
         double v_ = ( YP + YR + YH + Ywd + Ywv - (ship.getM() + ship.getMX()) * ur * rRad - (ship.getM() + ship.getMY()) * rRad * uc)/(ship.getM() + ship.getMX());

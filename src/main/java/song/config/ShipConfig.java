@@ -18,6 +18,7 @@ public class ShipConfig {
         private Double luojubi;
         private Double miuR;
         private Double nmdaRud;
+        private Double n;
 
         private Double L;
         private Double B;
