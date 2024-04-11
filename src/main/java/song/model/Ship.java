@@ -38,7 +38,7 @@ public class Ship implements Serializable {
     private Double m;
     //船舶排水体积系数
     private Double Cb;
-    //
+    //设定泰勒展开速度
     private Double u0;
     //船舶初稳性
     private Double gM;
@@ -72,13 +72,14 @@ public class Ship implements Serializable {
     private Double dPod;
     //每秒可调整角度
     private Double change;
+    //盘面比
     private Double panmianbi;
+    //螺距比
     private Double luojubi;
     //桨的转速
     private Double n;
 
-    //2024.04.10 20:02新增参数
-    //没有注释
+    //缩尺比
     private Double suochibi;
 
     //舵的参数
@@ -97,38 +98,63 @@ public class Ship implements Serializable {
     private Double tGanxian;
     //上层建筑
     private Double tSuperStru;
+    //Hull Transversal Projection Area above Waterline (HTPA) (m2)
     private Double shipAreaT;
+    //Hull Longitudinal Projection Area above Waterline (HLPA) (m2)
     private Double shipAreaL;
+    //Superstructure Longitudinal Projection Area (SLPA) (m2)
     private Double shipAreaSS;
+    //Longitudinal Distance from Stem to Center of HTPA + SLPA (m)
     private Double shipLxAreaLSS;
+    //Vertical Distance from CG to Center of HTPA + SLPA (m)
     private Double shipLzAreaLSS;
+    //Circumference of HTPA + SLPA excluding Lwl (m)
     private Double shipCirAreaLSS;
+    //Number of Mast
     private Double shipPilaN;
 
     //设置参数
-    private Double t;//仿真时间？
+    //仿真时间
+    private Double t;
+    //油门
     private Double youmen;
+    //实际进入计算的舵角
     private Double dertaDeg;
+    //设定的舵角
     private Double dertaDegInput;
+    //风力计算开关
     private Boolean windSwitch;
     private Double winDirnInpDeg;
     private Double winSpdInp;
+    //
     private Boolean curnSwitch;
+    //180度减速，0度加速，90度北移，-90度南移
     private Double curnDirnInpDeg;
+    //流速不要超过0.5
     private Double curnSpdInp;
     private Boolean waveSwitch;
+    //波长
     private Double waveNmda;
+    //波高波向，与浪向相同
     private Double waveDirnInpDeg;
+    //波高
     private Double waveHeight;
+    //是否开启调试绘图
     private Boolean drawingSwitch;
+    //打舵是根据轨迹自动控制，还是舵角由人指定
     private Boolean controlSwitch;
+    //是真实TCP通信，还是我自己的仿真计算
     private Boolean isRealTCPUDP;
+    //是否开始仿真
     private Boolean isStartSimulation;
+    //状态量
+    //实时的位置
     private Double x;
     private Double y;
     private Double yDraw;
     private Double faiDeg;
     private Double headingDeg;
+    //present，当前时刻的已知速度
     private Double u;
     private Double v;
     private Double rRad;
@@ -136,24 +162,26 @@ public class Ship implements Serializable {
     private Double vAcc;
     private Double rAccRad;
 
+    //让船稳定跑成直航的时间
     private Double tStable;
     private Double tMax;
 
-    private List<Double> P1;
+    private List<Double> P1;//当前时刻的跟踪路径
     private List<Double> P2;
     private Integer indexNextPoint;
 
     private Boolean justStart;
-    private List<Double> ptsDesiredArray;
-    private List<Double> vtsDesiredArray;
-    private List<Double> ptsMDesiredArray;
-    private List<Double> ptsRelaMDesiredArray;
-    private Double pingTaiXunHangMoShi;
-    private List<Double> numOfGoals;
-    private Double range;
-    private double[] origin;
-    private Boolean finished;
-    private Boolean justToStop;
+    private List<Double> ptsDesiredArray;//数据包中的轨迹点
+    private List<Double> vtsDesiredArray;//数据包中的期望航速
+    private List<Double> ptsMDesiredArray;//经纬度直接转换的距离
+    private List<Double> ptsRelaMDesiredArray;//相对origin的距离
+    private Double pingTaiXunHangMoShi;//默认为停止状态
+    private List<Double> numOfGoals;//跟踪点的数量默认为0，会自动根据Pts_desired_array调整
+    private Double range;//判断船舶进入范围的距离
+    private double[] origin;//当前起始的船舶的第一个位置
+    //如果未重启，但重新设定了起始点，以下值需要重新初始化
+    private Boolean finished;//判断是否到终点，到了会进入StopProcess
+    private Boolean justToStop;//判断是否是StopProcess中的第一个周期，第一个周期时需要求均值
     private Boolean stopSuccess;
     //绘图用的参数
     private List<Double> tArray;

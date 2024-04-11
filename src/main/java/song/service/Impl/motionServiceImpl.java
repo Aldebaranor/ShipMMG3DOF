@@ -34,43 +34,43 @@ public class motionServiceImpl implements motionService {
     public Ship init(){
 
         //船体属性
-        ship.setSuochibi(shipConfig.getSuochibi());
-        ship.setPanmianbi(shipConfig.getPanmianbi());
-        ship.setLuojubi(shipConfig.getLuojubi());
-        ship.setMiuR(shipConfig.getMiuR());
-        ship.setNmdaRud(shipConfig.getNmdaRud());
-        ship.setN(shipConfig.getN());
-        ship.setARRud();
-        ship.setBRud();
-        ship.setHRud();
-        ship.setXR();
-        ship.setYPRL();
-        ship.setYPRR();
         ship.setL(shipConfig.getL());
         ship.setB(shipConfig.getB());
         ship.setD(shipConfig.getD());
         ship.setRou(shipConfig.getRou());
         ship.setRouAir(shipConfig.getRouAir());
         ship.setG(shipConfig.getG());
+        ship.setSuochibi(shipConfig.getSuochibi());
+        ship.setPanmianbi(shipConfig.getPanmianbi());
+        ship.setLuojubi(shipConfig.getLuojubi());
+        ship.setMiuR(shipConfig.getMiuR());
+        ship.setNmdaRud(shipConfig.getNmdaRud());
+        ship.setN(shipConfig.getN());
+        ship.setU0(shipConfig.getU0());
+        ship.setMX(shipConfig.getMX());
+        ship.setMY(shipConfig.getMY());
+        ship.setIzz(shipConfig.getIzz());
+        ship.setChange(shipConfig.getChange());
+        ship.setTGanxian(shipConfig.getTGanxian());
+        ship.setTSuperStru(shipConfig.getTSuperStru());
+        ship.setARRud();
+        ship.setBRud();
+        ship.setHRud();
+        ship.setXR();
+        ship.setYPRL();
+        ship.setYPRR();
         ship.setW();
         ship.setM();
         ship.setCb();
-        ship.setU0(shipConfig.getU0());
         ship.setC();
         ship.setKX();
         ship.setNMda2();
         ship.setTao_();
         ship.setLv();
         ship.setXG();
-        ship.setMX(shipConfig.getMX());
-        ship.setMY(shipConfig.getMY());
-        ship.setIzz(shipConfig.getIzz());
         ship.setJzz();
         //桨属性
         ship.setDPod();
-        ship.setChange(shipConfig.getChange());
-        ship.setTGanxian(shipConfig.getTGanxian());
-        ship.setTSuperStru(shipConfig.getTSuperStru());
         ship.setShipAreaT();
         ship.setShipAreaL();
         ship.setShipAreaSS();
@@ -805,5 +805,4 @@ public class motionServiceImpl implements motionService {
         calcuCxwCywCnw.setCyw(Cyw);
         return calcuCxwCywCnw;
     }
-
 }
